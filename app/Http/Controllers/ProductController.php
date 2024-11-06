@@ -110,7 +110,9 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            File::delete('images/' . $product->image);
+            if (File::exists('images/' . $product->image)) {
+                File::delete('images/' . $product->image);
+            }
             $image_name = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $image_name);
             $product->image = $image_name;
